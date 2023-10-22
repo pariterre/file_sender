@@ -19,6 +19,8 @@ class _ServerScreenState extends State<ServerScreen> {
   late int? _port = int.tryParse(_portController.text);
   ServerBackend? _server;
 
+  Directory? _previousFolder;
+
   @override
   void dispose() {
     _server?.dispose();
@@ -39,20 +41,25 @@ class _ServerScreenState extends State<ServerScreen> {
   }
 
   Future<String?> _pickFilePath() async {
-    return await FilesystemPicker.open(
+    final filepath = await FilesystemPicker.open(
       title: 'Open file',
       rootDirectory: Directory('/home'),
+      directory: _previousFolder,
       context: context,
       fsType: FilesystemType.file,
-      allowedExtensions: ['.json'],
       fileTileSelectMode: FileTileSelectMode.wholeTile,
     );
+
+    if (filepath != null) _previousFolder = Directory(filepath).parent;
+
+    return filepath;
   }
 
   Future<String?> _saveFilePath() async {
     final folder = await FilesystemPicker.open(
       title: 'Save folder',
       rootDirectory: Directory('/home'),
+      directory: _previousFolder,
       context: context,
       fsType: FilesystemType.folder,
       fileTileSelectMode: FileTileSelectMode.wholeTile,
@@ -60,6 +67,8 @@ class _ServerScreenState extends State<ServerScreen> {
         FilesystemPickerNewFolderContextAction(),
       ],
     );
+
+    if (folder != null) _previousFolder = Directory(folder).parent;
 
     return folder == null ? null : '$folder/savedFile.json';
   }

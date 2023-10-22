@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:web_socket_client/web_socket_client.dart' as ws;
 
-Future<Map?> showFileSenderSaveDialog(context,
-    {required String data, int port = fileSenderDefaultPort}) async {
-  return await showDialog<Map>(
+Future<void> showFileSenderSaveDialog(context,
+    {required dynamic data, int port = fileSenderDefaultPort}) async {
+  return await showDialog(
     context: context,
     builder: (context) {
       return _FileSenderSaveFileDialog(port: fileSenderDefaultPort, data: data);
@@ -25,7 +25,7 @@ class _FileSenderSaveFileDialog extends StatelessWidget {
   const _FileSenderSaveFileDialog({this.port, required this.data});
 
   final int? port;
-  final String data;
+  final dynamic data;
 
   // This widget is the root of your application.
   @override
@@ -44,7 +44,7 @@ class _FileSenderPage extends StatefulWidget {
 
   // If port is defined, the Dialog skips to the connexion part
   final int? port;
-  final String data;
+  final dynamic data;
 
   @override
   State<_FileSenderPage> createState() => __FileSenderPageState();

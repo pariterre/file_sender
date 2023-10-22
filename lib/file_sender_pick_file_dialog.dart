@@ -93,23 +93,35 @@ class __FileSenderPageState extends State<_FileSenderPage> {
     }
   }
 
+  void _planPop([data]) async {
+    if (_socket != null) _socket!.close();
+
+    await Future.delayed(Duration(seconds: 1));
+    if (mounted) Navigator.of(context).pop(data);
+  }
+
   Widget _buildSuccess() {
+    _planPop();
     return const Text('File transfered');
   }
 
   Widget _buildCancelled() {
+    _planPop();
     return const Text('Operation cancelled');
   }
 
   Widget _buildInvalidProtocol() {
+    _planPop();
     return const Text('The protocol used was invalid');
   }
 
   Widget _buildInvalidRequest() {
+    _planPop();
     return const Text('The sent request was invalid');
   }
 
   Widget _buildInvalidResponse() {
+    _planPop();
     return const Text('The response from the server was invalid');
   }
 
@@ -180,16 +192,17 @@ class __FileSenderPageState extends State<_FileSenderPage> {
       _socket!.send(request);
     } else if (message['requested'] == 'invalid') {
       _connexionStatus = ConnexionStatus.invalidRequest;
+      _planPop();
     } else if (message['requested'] != 'pickFile') {
       _connexionStatus = ConnexionStatus.invalidResponse;
+      _planPop();
     } else if (message['requested'] == 'cancelled') {
       _connexionStatus = ConnexionStatus.cancelled;
+      _planPop();
     } else {
       _connexionStatus = ConnexionStatus.success;
 
-      final data = Uint8List.fromList(message['data'].cast<int>().toList());
-      _socket!.close();
-      if (mounted) Navigator.of(context).pop(data);
+      _planPop(Uint8List.fromList(message['data'].cast<int>().toList()));
     }
 
     if (mounted) setState(() {});

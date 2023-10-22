@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:web_socket_client/web_socket_client.dart' as ws;
 
-Future<Map?> showFileSenderPickDialog(context,
+Future<Uint8List?> showFileSenderPickDialog(context,
     {int port = fileSenderDefaultPort}) async {
-  return await showDialog<Map>(
+  return await showDialog<Uint8List?>(
     context: context,
     builder: (context) {
       return const _FileSenderPickFileDialog(port: fileSenderDefaultPort);
@@ -22,7 +22,7 @@ Future<Map?> showFileSenderPickDialog(context,
 /// Open an AlertDialog to pick a file from the computer.
 /// If [port] is defined, the Dialog skips to the connexion part.
 class _FileSenderPickFileDialog extends StatelessWidget {
-  const _FileSenderPickFileDialog({super.key, this.port});
+  const _FileSenderPickFileDialog({this.port});
 
   final int? port;
 
@@ -187,8 +187,7 @@ class __FileSenderPageState extends State<_FileSenderPage> {
     } else {
       _connexionStatus = ConnexionStatus.success;
 
-      final data = jsonDecode(message['data']);
-      if (mounted) Navigator.of(context).pop(data);
+      if (mounted) Navigator.of(context).pop(message['data']);
     }
 
     if (mounted) setState(() {});

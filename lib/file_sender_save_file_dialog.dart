@@ -22,7 +22,7 @@ Future<Map?> showFileSenderSaveDialog(context,
 /// Open an AlertDialog to pick a file from the computer.
 /// If [port] is defined, the Dialog skips to the connexion part.
 class _FileSenderSaveFileDialog extends StatelessWidget {
-  const _FileSenderSaveFileDialog({super.key, this.port, required this.data});
+  const _FileSenderSaveFileDialog({this.port, required this.data});
 
   final int? port;
   final String data;

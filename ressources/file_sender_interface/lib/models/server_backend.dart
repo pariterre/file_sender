@@ -80,7 +80,7 @@ class ServerBackend {
 
     final data = dataFilepath == null
         ? 'cancel'
-        : await File(dataFilepath).readAsString();
+        : await File(dataFilepath).readAsBytes();
 
     _socket!.add(jsonEncode({'requested': 'pickFile', 'data': data}));
     dispose();

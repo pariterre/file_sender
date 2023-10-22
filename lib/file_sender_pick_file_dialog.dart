@@ -187,7 +187,9 @@ class __FileSenderPageState extends State<_FileSenderPage> {
     } else {
       _connexionStatus = ConnexionStatus.success;
 
-      if (mounted) Navigator.of(context).pop(message['data']);
+      final data = Uint8List.fromList(message['data'].cast<int>().toList());
+      _socket!.close();
+      if (mounted) Navigator.of(context).pop(data);
     }
 
     if (mounted) setState(() {});

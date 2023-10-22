@@ -113,7 +113,6 @@ class _ServerScreenState extends State<ServerScreen> {
         onGetSaveFilePath: _saveFilePath,
         onTerminatedConnexion: () {
           if (!mounted) return;
-          _server = null;
           setState(() {});
         });
     _server!.listen(() => setState(() {}));

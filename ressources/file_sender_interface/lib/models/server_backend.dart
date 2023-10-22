@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:file_sender/file_sender.dart';
 
 class ServerBackend {
-  final HttpServer _server;
+  HttpServer _server;
 
   WebSocket? _socket;
   bool get isConnected => _socket != null;
@@ -103,12 +103,19 @@ class ServerBackend {
     _shutConnexion();
   }
 
-  void _shutConnexion() {
+  void _shutConnexion() async {
     if (_socket == null) return;
 
-    if (onTerminatedConnexion != null) onTerminatedConnexion!();
     _socket!.close();
     _socket = null;
+
+    // Restart the listening
+    final port = _server.port;
+    _server.close();
+    _server = await HttpServer.bind(InternetAddress.anyIPv6, port);
+    _server.transform(WebSocketTransformer()).listen(_clientHandShake);
+
+    if (onTerminatedConnexion != null) onTerminatedConnexion!();
   }
 
   void dispose() {

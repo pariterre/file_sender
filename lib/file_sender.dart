@@ -15,7 +15,7 @@ export 'package:file_sender/file_sender_save_file_dialog.dart';
 ///     {"request": "saveFile", "data": "json encoded file"}
 ///
 /// The response from the server to "pickFile" is:
-///   {"resquested": "pickFile", "data": "[json encoded file]"}
+///   {"resquested": "pickFile", "data": List<int>}
 ///   {"resquested": "pickFile", "data": "cancel"}
 ///
 /// The response from the server to "saveFile" is:

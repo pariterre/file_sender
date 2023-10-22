@@ -26,7 +26,8 @@ class TransferFilePage extends StatelessWidget {
   void _getFile(context) async {
     final myData =
         await showFileSenderPickDialog(context, port: fileSenderDefaultPort);
-    debugPrint(myData.toString());
+    final myJson = String.fromCharCodes(myData!.toList());
+    debugPrint(myJson);
   }
 
   void _saveFile(context) async {

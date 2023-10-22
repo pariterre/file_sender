@@ -4,7 +4,7 @@ The file sender code is to create a work around if some web flutter project can'
 # The way it works
 
 ## Client side
-Two widgets (FileSenderPickFileDialog and FileSenderSaveFileDialog) are provided to establish a connexion with the interface. This connexion is set via WebSocket and is on the port 3004 by default. 
+Two dialogs (showFileSenderPickDialog and showFileSenderSaveDialog) are provided to establish a connexion with the interface. This connexion is set via WebSocket and is on the port 3004 by default. 
 
 ## Interface side
 When the client wants to open or save a file, this interface must be active. It is merely a client to a open file dialog or save file dialog.

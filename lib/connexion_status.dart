@@ -3,6 +3,7 @@ enum ConnexionStatus {
   connecting,
   connected,
   invalidRequest,
+  invalidResponse,
   invalidProtocol,
   cancelled,
   success,

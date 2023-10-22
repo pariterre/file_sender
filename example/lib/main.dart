@@ -23,6 +23,22 @@ class MyApp extends StatelessWidget {
 class TransferFilePage extends StatelessWidget {
   const TransferFilePage({super.key});
 
+  void _getFile(context) async {
+    final myData =
+        await showFileSenderPickDialog(context, port: fileSenderDefaultPort);
+    debugPrint(myData.toString());
+  }
+
+  void _saveFile(context) async {
+    final data = const JsonEncoder.withIndent('  ')
+        .convert({'dataToSave': 'Hello world'});
+    await showFileSenderSaveDialog(
+      context,
+      port: fileSenderDefaultPort,
+      data: data,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,32 +50,12 @@ class TransferFilePage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             ElevatedButton(
-              onPressed: () async {
-                final myData = await showDialog<Map>(
-                  context: context,
-                  builder: (context) {
-                    return const FileSenderPickFileDialog(
-                        port: fileSenderDefaultPort);
-                  },
-                );
-                debugPrint(myData.toString());
-              },
+              onPressed: () => _getFile(context),
               child: const Text('Pick file request'),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () async {
-                final myData = await showDialog<Map>(
-                  context: context,
-                  builder: (context) {
-                    return FileSenderSaveFileDialog(
-                        port: fileSenderDefaultPort,
-                        data: const JsonEncoder.withIndent('  ')
-                            .convert({'dataToSave': 'Hello world'}));
-                  },
-                );
-                debugPrint(myData.toString());
-              },
+              onPressed: () => _saveFile(context),
               child: const Text('Save file request'),
             ),
           ],

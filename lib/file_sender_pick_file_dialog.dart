@@ -7,11 +7,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:web_socket_client/web_socket_client.dart' as ws;
 
+Future<Map?> showFileSenderPickDialog(context,
+    {int port = fileSenderDefaultPort}) async {
+  return await showDialog<Map>(
+    context: context,
+    builder: (context) {
+      return const _FileSenderPickFileDialog(port: fileSenderDefaultPort);
+    },
+    barrierDismissible: false,
+  );
+}
+
 ///
 /// Open an AlertDialog to pick a file from the computer.
 /// If [port] is defined, the Dialog skips to the connexion part.
-class FileSenderPickFileDialog extends StatelessWidget {
-  const FileSenderPickFileDialog({super.key, this.port});
+class _FileSenderPickFileDialog extends StatelessWidget {
+  const _FileSenderPickFileDialog({super.key, this.port});
 
   final int? port;
 
@@ -71,6 +82,8 @@ class __FileSenderPageState extends State<_FileSenderPage> {
         return _buildTransferFile();
       case ConnexionStatus.invalidProtocol:
         return _buildInvalidProtocol();
+      case ConnexionStatus.invalidResponse:
+        return _buildInvalidResponse();
       case ConnexionStatus.invalidRequest:
         return _buildInvalidRequest();
       case ConnexionStatus.cancelled:
@@ -94,6 +107,10 @@ class __FileSenderPageState extends State<_FileSenderPage> {
 
   Widget _buildInvalidRequest() {
     return const Text('The sent request was invalid');
+  }
+
+  Widget _buildInvalidResponse() {
+    return const Text('The response from the server was invalid');
   }
 
   Widget _buildTransferFile() {
@@ -163,6 +180,8 @@ class __FileSenderPageState extends State<_FileSenderPage> {
       _socket!.send(request);
     } else if (message['requested'] == 'invalid') {
       _connexionStatus = ConnexionStatus.invalidRequest;
+    } else if (message['requested'] != 'pickFile') {
+      _connexionStatus = ConnexionStatus.invalidResponse;
     } else if (message['requested'] == 'cancelled') {
       _connexionStatus = ConnexionStatus.cancelled;
     } else {

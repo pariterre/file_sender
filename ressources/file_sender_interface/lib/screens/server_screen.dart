@@ -43,7 +43,7 @@ class _ServerScreenState extends State<ServerScreen> {
   Future<String?> _pickFilePath() async {
     final filepath = await FilesystemPicker.open(
       title: 'Open file',
-      rootDirectory: Directory('/home'),
+      rootDirectory: Directory(Platform.isWindows ? 'C:/' : '/home'),
       directory: _previousFolder,
       context: context,
       fsType: FilesystemType.file,
@@ -58,7 +58,7 @@ class _ServerScreenState extends State<ServerScreen> {
   Future<String?> _saveFilePath() async {
     final folder = await FilesystemPicker.open(
       title: 'Save folder',
-      rootDirectory: Directory('/home'),
+      rootDirectory: Directory(Platform.isWindows ? 'C:/' : '/home'),
       directory: _previousFolder,
       context: context,
       fsType: FilesystemType.folder,

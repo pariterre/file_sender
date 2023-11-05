@@ -10,5 +10,11 @@
             "type": "dart",
             "program": "example/lib/main.dart"
         },
+        {
+            "name": "Interface",
+            "request": "launch",
+            "type": "dart",
+            "program": "ressources/file_sender_interface/lib/main.dart"
+        },
     ]
 }
